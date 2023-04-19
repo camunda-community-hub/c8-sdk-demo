@@ -7,7 +7,7 @@ config()
 
 const zbc = new C8.ZBClient()
 const operate = new C8.OperateApiClient()
-const optimize = new C8.OptimizeApiClient()
+const optimize = new C8.OptimizeApiClient() // unused
 const tasklist = new C8.TasklistApiClient()
 
 const getLogger = (prefix: string, color: chalk.Chalk) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
@@ -54,7 +54,9 @@ setInterval(async () => {
                 humanTaskStatus: 'Got done'
             })
         })
+    } else {
+        log('No human tasks found')
     }
-}, 5000)
+}, 3000)
 
 main()
