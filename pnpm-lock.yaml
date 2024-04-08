@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@camunda8/sdk':
-    specifier: alpha
-    version: 8.5.0-alpha.6
+    specifier: ^8.5.0
+    version: 8.5.0
   chalk:
     specifier: ^4.1.2
     version: 4.1.2
@@ -25,8 +25,8 @@ devDependencies:
 
 packages:
 
-  /@camunda8/sdk@8.5.0-alpha.6:
-    resolution: {integrity: sha512-rMMkSGtsmXShe7ym4dSIh2qyPBtiUKrq4qEIh23mQrvSSNUTzlqQUqPHMxygBHxjhEBuBeOBtzBDF8eFPoqnrw==}
+  /@camunda8/sdk@8.5.0:
+    resolution: {integrity: sha512-fyY5YME0revYwxko9bz7Cnndh18LOeDRugxG8rcyP71CFNRsg1h9qK2TD7IQHi+boU8+lXVhwIk4FrRX7BZ1XA==}
     dependencies:
       '@grpc/grpc-js': 1.9.7
       '@grpc/proto-loader': 0.7.10

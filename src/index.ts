@@ -16,8 +16,10 @@ const getLogger = (prefix: string, color: chalk.Chalk) => (msg: string) => conso
 async function main() {
     const log = getLogger('Zeebe', chalk.greenBright) 
     zbc 
-    const res = await zbc.deployResource({processFilename:path.join(process.cwd(), 'resources', 'c8-sdk-demo.bpmn') })
-    log(`Deployed process ${res.key}`)
+    const res = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), 'resources', 'c8-sdk-demo.bpmn') 
+    })
+    log(`Deployed process ${res.deployments[0].process.bpmnProcessId}`)
 
     const p = await zbc.createProcessInstanceWithResult({
         bpmnProcessId: `c8-sdk-demo`, 
@@ -25,15 +27,26 @@ async function main() {
             humanTaskStatus: 'Needs doing'
         }
     })
+
     log(`Finished Process Instance ${p.processInstanceKey}`)
     log(`humanTaskStatus is "${p.variables.humanTaskStatus}"`)
+    log(`serviceTaskOutcome is ${p.variables.serviceTaskOutcome}`)
 
-    const _p = await operate.getProcessInstance(p.processInstanceKey)
-    if (_p.state == 'COMPLETED') {
-     await operate.getVariables(p.processInstanceKey)
+    await new Promise(res => setTimeout(() => res(null), 5000))
+    const historicalProcessInstance = await operate.getProcessInstance(p.processInstanceKey).catch(e => {
+        if (e.response.body.status === 404) {
+            log(chalk.redBright(`[Operate] ${e.response.body.message}`))
+            return null
+        }
+    })
+    console.log(historicalProcessInstance)
+    if (historicalProcessInstance?.state == 'COMPLETED') {
+        const variables = await operate.getJSONVariablesforProcess(historicalProcessInstance.key)
+        log(chalk.redBright('\n[Operate] Variables:', JSON.stringify(variables, null, 2)))
     }
 
-    const bpmn = await operate.getProcessDefinitionXML(parseInt(p.processDefinitionKey,10))
+    const bpmn = await operate.getProcessDefinitionXML(p.processDefinitionKey)
+
     log(chalk.redBright('\n[Operate] BPMN XML:', bpmn))
 }
 
@@ -42,8 +55,10 @@ zbc.createWorker({
     taskType: 'service-task',
     taskHandler: job => {
         const log = getLogger('Zeebe Worker', chalk.blueBright)
-        log(`handling job ${job.bpmnProcessId}`)
-        return job.complete()
+        log(`handling job of type ${job.type}`)
+        return job.complete({
+            serviceTaskOutcome: 'We did it!'
+        })
     }
 })
 
