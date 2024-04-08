@@ -1,28 +1,37 @@
-import {C8, Tasklist} from 'camunda-8-sdk'
+import {Camunda8} from '@camunda8/sdk'
 
 import chalk from 'chalk'
 import * as path from 'path'
 import { config } from 'dotenv' 
 config()
 
-const zbc = new C8.ZBClient()
-const operate = new C8.OperateApiClient()
-const optimize = new C8.OptimizeApiClient() // unused
-const tasklist = new C8.TasklistApiClient()
+const c8 = new Camunda8()
+const zbc = c8.getZeebeGrpcApiClient()
+const operate = c8.getOperateApiClient()
+const optimize = c8.getOptimizeApiClient() // unused
+const tasklist = c8.getTasklistApiClient()
 
 const getLogger = (prefix: string, color: chalk.Chalk) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
 
 async function main() {
-
     const log = getLogger('Zeebe', chalk.greenBright) 
-    const res = await zbc.deployProcess(path.join(process.cwd(), 'resources', 'c8-sdk-demo.bpmn'))
+    zbc 
+    const res = await zbc.deployResource({processFilename:path.join(process.cwd(), 'resources', 'c8-sdk-demo.bpmn') })
     log(`Deployed process ${res.key}`)
 
-    const p = await zbc.createProcessInstanceWithResult(`c8-sdk-demo`, {
-        humanTaskStatus: 'Needs doing'
+    const p = await zbc.createProcessInstanceWithResult({
+        bpmnProcessId: `c8-sdk-demo`, 
+        variables:{
+            humanTaskStatus: 'Needs doing'
+        }
     })
     log(`Finished Process Instance ${p.processInstanceKey}`)
     log(`humanTaskStatus is "${p.variables.humanTaskStatus}"`)
+
+    const _p = await operate.getProcessInstance(p.processInstanceKey)
+    if (_p.state == 'COMPLETED') {
+     await operate.getVariables(p.processInstanceKey)
+    }
 
     const bpmn = await operate.getProcessDefinitionXML(parseInt(p.processDefinitionKey,10))
     log(chalk.redBright('\n[Operate] BPMN XML:', bpmn))
@@ -41,15 +50,19 @@ zbc.createWorker({
 console.log(`Starting human task poller...`)
 setInterval(async () => {
     const log = getLogger('Tasklist', chalk.yellowBright)
-    const res = await tasklist.getTasks({
-        state: Tasklist.TaskState.CREATED
+    const res = await tasklist.searchTasks({
+        state: 'CREATED'
     })
-    if (res.tasks.length > 0) {
-        log(`fetched ${res.tasks.length} human tasks`)
-        res.tasks.forEach(async task => {
-            log(`claiming task ${task.id} from process ${task.processInstanceId}`)
-            const {claimTask: t} = await tasklist.claimTask(task.id, 'demobot', true)
-            log(`servicing human task ${t.id} from process ${t.processInstanceId}`)
+    if (res.length > 0) {
+        log(`fetched ${res.length} human tasks`)
+        res.forEach(async task => {
+            log(`claiming task ${task.id} from process ${task.processInstanceKey}`)
+            const t = await tasklist.assignTask({
+                taskId: task.id, 
+                assignee: 'demobot',
+                allowOverrideAssignment: true
+            })
+            log(`servicing human task ${t.id} from process ${t.processInstanceKey}`)
             await tasklist.completeTask(t.id, {
                 humanTaskStatus: 'Got done'
             })
@@ -58,5 +71,7 @@ setInterval(async () => {
         log('No human tasks found')
     }
 }, 3000)
+
+
 
 main()
