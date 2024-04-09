@@ -11,7 +11,7 @@ const operate = c8.getOperateApiClient()
 const optimize = c8.getOptimizeApiClient() // unused
 const tasklist = c8.getTasklistApiClient()
 
-const getLogger = (prefix: string, color: chalk.Chalk) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
+const getLogger = (prefix: string, color: any) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
 
 async function main() {
     const log = getLogger('Zeebe', chalk.greenBright) 
