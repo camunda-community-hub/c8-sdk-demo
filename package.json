@@ -8,7 +8,7 @@
     "start": "node --loader ts-node/esm src/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "josh.wulf@camunda.com",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
