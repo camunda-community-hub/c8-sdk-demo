@@ -2,7 +2,7 @@
 
 This is a demo of the [Camunda 8 SDK for Node.js](https://www.npmjs.com/package/@camunda8/sdk).
 
-It requires either a Camunda 8 Platform SaaS account, which you can get for free [here](https://signup.camunda.com/accounts), or running the Self-Managed stack via docker-compose using the configurations [here](https://github.com/camunda/camunda-platform).
+It requires either a Camunda 8 Platform SaaS account, which you can get for free [here](https://signup.camunda.com/accounts), or running the Self-Managed stack via docker-compose using the configuration [here]([https://github.com/camunda/camunda-platform](https://github.com/camunda/camunda-8-js-sdk/blob/main/docker/docker-compose-multitenancy.yml)).
 
 ## Setup
 
