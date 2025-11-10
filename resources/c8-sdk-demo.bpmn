@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.8.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.36.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
   <bpmn:process id="c8-sdk-demo" name="C8 SDK Demo" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_0yqo0wz</bpmn:outgoing>
@@ -10,14 +10,17 @@
       <bpmn:incoming>Flow_03qgl0x</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_03qgl0x" sourceRef="Activity_0tp91ve" targetRef="Event_0j28rou" />
-    <bpmn:serviceTask id="Activity_1gwbbuy" name="Do the service thing">
+    <bpmn:serviceTask id="Activity_1gwbbuy" name="Service worker task">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="service-task" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0yqo0wz</bpmn:incoming>
       <bpmn:outgoing>Flow_0qugen1</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_0tp91ve" name="Human, do something!">
+    <bpmn:userTask id="Activity_0tp91ve" name="User task">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0qugen1</bpmn:incoming>
       <bpmn:outgoing>Flow_03qgl0x</bpmn:outgoing>
     </bpmn:userTask>
