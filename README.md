@@ -1,8 +1,14 @@
 # Camunda 8 SDK for Node.js Demo
 
-This is a demo of the [Camunda 8 SDK for Node.js](https://www.npmjs.com/package/@camunda8/sdk).
+This is a demo of the [Camunda 8 SDK for Node.js](https://www.npmjs.com/package/@camunda8/sdk) and the [Orchestration Cluster API](https://www.npmjs.com/package/@camunda8/orchestration-cluster-api) package.
 
 This demonstrates the use of the Orchestration Cluster (REST) API, available from Camunda 8.8 onward.
+
+## Differences between the packages
+
+The SDK package contains the Orchestration Cluster API package, as well as the gRPC API and the pre-8.8 v1 APIs.
+
+The Orchestration Cluster API package is a focused client for use with 8.8 and later.
 
 ## Setup
 
@@ -17,7 +23,39 @@ npm i
 - Create a cluster in [Camunda SaaS](https://camunda.io).
     - Create an API client in the Web Console (instructions [here](https://docs.camunda.io/docs/next/guides/setup-client-connection-credentials/))
 
-## Environment Configuration
+## Configuration for Orchestration Cluster API client
+
+Camunda Run: 
+
+```bash
+export CAMUNDA_REST_ADDRESS='http://localhost:8088/v2'
+```
+
+Docker:
+
+```bash
+export CAMUNDA_REST_ADDRESS='http:///localhost:8080/v2'
+```
+
+Camunda SaaS:
+
+```bash
+export CAMUNDA_REST_ADDRESS='https://5c34c0a7-...-125615f7a9b9.syd-1.zeebe.camunda.io'
+export CAMUNDA_CLIENT_ID='yvvURO9TmBnP3...'
+export CAMUNDA_CLIENT_SECRET='iJJu-SHgUt...'
+export CAMUNDA_OAUTH_URL='https://login.cloud.camunda.io/oauth/token'
+```
+Self-hosted with OAuth:
+
+```bash
+# Self-Managed
+export CAMUNDA_REST_ADDRESS='http://localhost:8088/v2'
+export CAMUNDA_CLIENT_ID='zeebe'
+export CAMUNDA_CLIENT_SECRET='zecret'
+export CAMUNDA_OAUTH_URL='http://localhost:18080/auth/realms/camunda-platform/protocol/openid-connect/token'
+```
+
+## Environment Configuration for SDK package
 
 Camunda Run: 
 
@@ -57,4 +95,8 @@ The next task in the process model is a human task. The program polls for new us
 
 ## Run
 
-- Run the application with `npm start`
+For the SDK: 
+- `npm start:sdk`
+
+For the Orchestration Cluster API package:
+- `npm start:oca`
