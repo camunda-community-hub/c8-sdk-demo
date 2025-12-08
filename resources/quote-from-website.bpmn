@@ -29,9 +29,9 @@
       <bpmn:incoming>Flow_1jcaxwg</bpmn:incoming>
       <bpmn:outgoing>Flow_1igd0uy</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0968bde" name="Send automated quote">
+    <bpmn:serviceTask id="Activity_0968bde" name="Send quote">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="send-automated-quote" />
+        <zeebe:taskDefinition type="send-quote" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1igd0uy</bpmn:incoming>
       <bpmn:incoming>Flow_06p3qmf</bpmn:incoming>
@@ -139,6 +139,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1mnaoms_di" bpmnElement="Activity_0968bde">
         <dc:Bounds x="690" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1r5gz5l_di" bpmnElement="generate-manual-quote">
         <dc:Bounds x="530" y="250" width="100" height="80" />
