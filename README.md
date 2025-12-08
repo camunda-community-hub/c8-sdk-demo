@@ -100,3 +100,17 @@ For the SDK:
 
 For the Orchestration Cluster API package:
 - `npm start:oca`
+
+For the full-featured demo: 
+
+Install tsx, which transpiles TypeScript (without type-checking it) and runs it:
+
+```
+npm i -g tsx
+```
+
+Run the full-featured demo: 
+
+```
+tsx src/full-demo-oca.ts
+```
