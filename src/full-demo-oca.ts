@@ -37,7 +37,7 @@ async function main() {
             })
             const isAutomatible = (job.variables.request != undefined)
             return job.complete({
-                isAutomatable: isAutomatible
+                isAutomatible
             })
         }
     })
